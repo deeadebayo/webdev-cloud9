@@ -5,8 +5,15 @@ const express = require("express"),
 
 app.set('view engine', 'pug');
 
+app.get('/', (req, res) => {
+    res.render('search');
+});
+
 app.get('/results', (req, res) => {
-    request('http://omdbapi.com/?s=let&apikey=thewdb', (err, response, body) => {
+    const query = req.query.search;
+    let url = 'http://omdbapi.com/?s=' + query + '&apikey=thewdb';
+
+    request(url, (err, response, body) => {
         if (!err && response.statusCode == 200) {
             const parsedData = JSON.parse(body);
             // res.send(parsedData.Search[2].Title);
